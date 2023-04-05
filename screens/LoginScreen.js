@@ -11,7 +11,7 @@ export default function LoginScreen() {
         height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff",
+        // backgroundColor: "#fff",
       }}
     >
       <Image
@@ -19,9 +19,12 @@ export default function LoginScreen() {
         containerStyle={{
           width: "100%",
           height: "100%",
-          transform: "scale(0.5)",
+          // transform: "scale(0.5)",
+          backgroundColor: "red",
         }}
+        resizeMode="cover"
       />
+
       <Text>Login Screen</Text>
       <View style={styles.loginBtnContainer}>
         <Button
