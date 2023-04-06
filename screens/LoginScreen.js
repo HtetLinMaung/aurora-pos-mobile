@@ -1,31 +1,81 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button, Image } from "@rneui/themed";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { Button } from "@rneui/themed";
 import { primaryColor } from "../constants";
-import logo from "../assets/logo.png";
+import Logo from "../components/Logo";
+import Label from "../components/Label";
+import BorderInput from "../components/BorderInput";
 
 export default function LoginScreen() {
   return (
     <View
       style={{
         height: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        // backgroundColor: "#fff",
+        backgroundColor: "#fff",
       }}
     >
-      <Image
-        source={logo}
-        containerStyle={{
-          width: "100%",
-          height: "100%",
-          // transform: "scale(0.5)",
-          backgroundColor: "red",
-        }}
-        resizeMode="cover"
-      />
+      <ScrollView>
+        <View
+          style={{
+            alignItems: "center",
+            marginTop: 87,
+            marginBottom: 43,
+          }}
+        >
+          <Logo />
+        </View>
+        <Label
+          medium
+          style={{
+            textAlign: "center",
+            fontSize: 24,
+            marginBottom: 43,
+          }}
+        >
+          Login to Your Account
+        </Label>
+        <View style={{ paddingHorizontal: 37, marginBottom: 10 }}>
+          <Label
+            style={{
+              fontSize: 12,
+              marginBottom: 3.04,
+            }}
+          >
+            Email
+          </Label>
+          <BorderInput />
+        </View>
+        <View style={{ paddingHorizontal: 37 }}>
+          <Label
+            style={{
+              fontSize: 12,
+              marginBottom: 3.04,
+            }}
+          >
+            Password
+          </Label>
+          <BorderInput secureTextEntry={true} />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingHorizontal: 37,
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <Label medium style={{ fontSize: 14 }}>
+              Remember me
+            </Label>
+          </View>
+          <View>
+            <Label medium style={{ fontSize: 14, color: primaryColor }}>
+              Forgot Password
+            </Label>
+          </View>
+        </View>
+      </ScrollView>
 
-      <Text>Login Screen</Text>
       <View style={styles.loginBtnContainer}>
         <Button
           title="Login"
