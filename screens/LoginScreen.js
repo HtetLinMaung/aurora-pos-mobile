@@ -1,12 +1,35 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import { Button } from "@rneui/themed";
-import { primaryColor } from "../constants";
+import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { Button, CheckBox } from "@rneui/themed";
+import { primaryColor, serverUrl } from "../constants";
 import Logo from "../components/Logo";
 import Label from "../components/Label";
 import BorderInput from "../components/BorderInput";
+import http from "starless-http";
 
 export default function LoginScreen() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const handleLogin = async () => {
+    const [response, error] = await http.post(`${serverUrl}/login`, {
+      username,
+      password,
+      rememberMe,
+    });
+    if (error || !response || response.status >= 400 || !response.data) {
+      let message = "Something went wrong!";
+      if (response && response.data) {
+        message = response.data.message;
+      } else if (error) {
+        message = error.message;
+      }
+      console.log(message);
+    }
+    console.log(response.data);
+  };
+
   return (
     <View
       style={{
@@ -43,7 +66,10 @@ export default function LoginScreen() {
           >
             Email
           </Label>
-          <BorderInput />
+          <BorderInput
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+          />
         </View>
         <View style={{ paddingHorizontal: 37 }}>
           <Label
@@ -54,19 +80,49 @@ export default function LoginScreen() {
           >
             Password
           </Label>
-          <BorderInput secureTextEntry={true} />
+          <BorderInput
+            secureTextEntry={true}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
         </View>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
+            alignItems: "center",
             paddingHorizontal: 37,
           }}
         >
-          <View style={{ flexDirection: "row" }}>
-            <Label medium style={{ fontSize: 14 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <CheckBox
+              title="Remember Me"
+              textStyle={{ fontSize: 14, fontFamily: "Poppins-Medium" }}
+              onPress={() => setRememberMe(!rememberMe)}
+              checked={rememberMe}
+              size={20}
+              containerStyle={{
+                paddingHorizontal: 0,
+                paddingVertical: 0,
+                marginLeft: 0,
+                marginHorizontal: 0,
+                // paddingLeft: 0,
+                // paddingRight: 10,
+              }}
+              checkedColor={primaryColor}
+            />
+            {/* <Label
+              medium
+              style={{ fontSize: 14 }}
+              onPress={() => setRememberMe(!rememberMe)}
+            >
               Remember me
-            </Label>
+            </Label> */}
           </View>
           <View>
             <Label medium style={{ fontSize: 14, color: primaryColor }}>
@@ -78,6 +134,7 @@ export default function LoginScreen() {
 
       <View style={styles.loginBtnContainer}>
         <Button
+          onPress={handleLogin}
           title="Login"
           buttonStyle={styles.loginBtn}
           radius={15}
